@@ -106,11 +106,13 @@ class NoteFreqs:
         except ValueError:
             return False
 
-    # formats
-    #
-    # C4: C in octave 4
-
     def single_note_freq_from_str(self, nfstr):
+        """
+        Takes a string formatted like "C4" and returns its frequency
+
+        :param nfstr: A string like "C4"
+        :return: Frequency in hertz
+        """
         if self.is_float(nfstr):
             return float(nfstr)
         else:
@@ -125,6 +127,15 @@ class NoteFreqs:
                 raise Exception('Note "{}" is not valid'.format(nfstr))
 
     def scale_freqs(self, *, scale, root_octave):
+        """
+        This returns all frequencies in a scale. Provide the root octave
+        and the name of the scale.
+
+        Example scale names are "a_major", "a_minor", "c_major" etc.
+
+        :param scale: A string of the scale name.
+        :param root_octave: -1 to 9 inclusive
+        """
         if scale not in self._scales:
             raise Exception('Scale {} does not exist'.format(scale))
         if root_octave < -1 or root_octave > 8:
@@ -134,6 +145,15 @@ class NoteFreqs:
     # c-major-04-1: C major rooted in 4, degree 1. Which is C4.
 
     def scale_freq_from_str(self, nfstr):
+        """
+        Finds the frequency of a particular degree on a particular scale.
+        THe format for specification is:
+
+        "c-major-04-1" for C major rooted in 4, degree 1. Which is C4.
+
+        :param nfstr: The parameter formatted to specify degree on the scale
+        :return: The frequency in hertz of that note.
+        """
         if self.nfstr_regex.match(nfstr) is not None:
             nfstr_split = nfstr.split('_')
             scale = nfstr[:7]
